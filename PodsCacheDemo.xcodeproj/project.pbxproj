@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -88,7 +88,6 @@
 				0739C8886DB5ED0A14081BB1 /* Pods-PodsCacheDemo.debug.xcconfig */,
 				3BBC3C9B02940D1E9BE931F0 /* Pods-PodsCacheDemo.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -175,7 +174,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PodsCacheDemo/Pods-PodsCacheDemo-frameworks.sh\"\n";
+			shellScript = "if [ -z \"${CACHE_BUILT_PRODUCTS_DIR}\" ]; then\n  built_products_dir=$BUILT_PRODUCTS_DIR\nelse\n  built_products_dir=$CACHE_BUILT_PRODUCTS_DIR\nfi\nBUILT_PRODUCTS_DIR=$built_products_dir \"${PODS_ROOT}/Target Support Files/Pods-PodsCacheDemo/Pods-PodsCacheDemo-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		D3A045FC8AFA73A6657CE8F9 /* [CP] Check Pods Manifest.lock */ = {
@@ -357,11 +356,10 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = 3RNQT8AN5J;
+				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = PodsCacheDemo/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited)";
+				OTHER_CFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tdg.demo1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Tdg Demo 1";
@@ -378,11 +376,15 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = 3RNQT8AN5J;
-				INFOPLIST_FILE = PodsCacheDemo/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
+				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"@executable_path/Frameworks",
+					"$(SRCROOT)/build/Release-iphoneos",
 				);
+				INFOPLIST_FILE = PodsCacheDemo/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited)";
+				OTHER_CFLAGS = "";
+				PODS_CONFIGURATION_BUILD_DIR = "$(SRCROOT)/build/Release-iphoneos";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tdg.demo1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Tdg Demo 1";

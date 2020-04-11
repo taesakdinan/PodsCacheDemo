@@ -5,3 +5,4 @@ Pods/
 *.dSYM.zip
 fastlane/README.md
 fastlane/report.xml
+build/*

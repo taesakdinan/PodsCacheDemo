@@ -16,10 +16,53 @@
 default_platform(:ios)
 
 platform :ios do
-  desc "Description of what the lane does"
+  desc "build application"
   lane :build do
     gym(workspace: "PodsCacheDemo.xcworkspace",
         scheme: "PodsCacheDemo",
         export_method: "enterprise")
   end
+
+  desc "patch app project for pods cache"
+  lane :patch_pods_cache do
+    fastlane_require 'xcodeproj'
+    project = Xcodeproj::Project.open("../PodsCacheDemo.xcodeproj")
+    target = project.targets.select { |target| target.name == 'PodsCacheDemo' }.first
+    phase = target.shell_script_build_phases.select { |phase| phase.name.include?('Embed Pods Frameworks') }.first
+    prefix = [
+      'if [ -z "${CACHE_BUILT_PRODUCTS_DIR}" ]; then',
+      '  built_products_dir=$BUILT_PRODUCTS_DIR',
+      'else',
+      '  built_products_dir=$CACHE_BUILT_PRODUCTS_DIR',
+      'fi'
+    ].join("\n")
+    phase.shell_script = [
+      prefix,
+      "BUILT_PRODUCTS_DIR=$built_products_dir #{phase.shell_script}"
+    ].join("\n")
+    project.save()
+  end
+
+  desc "build and save pods target"
+  lane :build_pods do
+    xcodebuild(
+      :project => File.expand_path('../Pods/Pods.xcodeproj'),
+      :scheme => 'Pods-PodsCacheDemo',
+      :configuration => 'Release',
+      :destination => 'generic/platform=iOS')
+  end
+
+  lane :build_main_project do
+    cache_folder = File.expand_path('../build/Release-iphoneos')
+    gym(
+      project: 'PodsCacheDemo.xcodeproj',
+      scheme: 'PodsCacheDemo',
+      export_method: 'enterprise',
+      xcargs: [
+        "PODS_CONFIGURATION_BUILD_DIR=#{cache_folder}",
+        "CACHE_BUILT_PRODUCTS_DIR=#{cache_folder}"
+      ].join(" ")
+    )
+  end
+
 end
