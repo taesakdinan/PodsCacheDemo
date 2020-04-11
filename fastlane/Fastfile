@@ -19,6 +19,7 @@ platform :ios do
   desc "Description of what the lane does"
   lane :build do
     gym(workspace: "PodsCacheDemo.xcworkspace",
-        scheme: "PodsCacheDemo")
+        scheme: "PodsCacheDemo",
+        export_method: "enterprise")
   end
 end

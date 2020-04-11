@@ -1,2 +1,7 @@
 *.lock
 Pods/
+*/xcuserdata/
+*.ipa
+*.dSYM.zip
+fastlane/README.md
+fastlane/report.xml
